@@ -28,23 +28,25 @@
 //     RET
 // ; ------------
 
-// ; Data section
-.section .data
-.align 4
-gdtr:
-    .short 0
-    .long 0
+// // ; Data section
+// .section .data
+// .align 4
+// gdtr:
+//     .short 0
+//     .long 0
 
 // ; Code section
 .section .text
 .global setGdt
 .type setGdt, @function
 setGdt:
-    movw 4(%esp), %ax
-    movw %ax, gdtr
-    movl 8(%esp), %EAX
-    movl %eax, gdtr+2
-    lgdt gdtr
+    // movw 4(%esp), %ax
+    // movw %ax, gdtr
+    // movl 8(%esp), %EAX
+    // movl %eax, gdtr+2
+    // lgdt gdtr
+    movl 4(%esp), %eax
+    lgdt (%eax)
     ret
 
 // Flush old segment registers from the bootloader with new segments from the gdt
