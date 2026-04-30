@@ -19,16 +19,6 @@ typedef struct {
     uint32_t base;
 } __attribute__((packed)) gdt_ptr_struct;
 
-// Possibly just create an array of segment descriptors
-// typedef struct {
-//     SegmentDescriptor null_segment;
-//     SegmentDescriptor kernel_code_segment;
-//     SegmentDescriptor kernel_data_segment;
-//     // SegmentDescriptor user_code_segment;
-//     // SegmentDescriptor user_data_segment;
-//     // SegmentDescriptor task_state_segment;
-// } __attribute__((packed)) GlobalDescriptorTable;
-
 void init_gdt_segments();
 void create_segment_descriptor(segment_descriptor_struct* target, uint32_t base, uint32_t limit, uint8_t access_rights);
 

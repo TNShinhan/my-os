@@ -1,7 +1,6 @@
 #include <kernel/gdt.h>
 
 // Define as static/global since the GDT on the stack may be overwritten
-// static GlobalDescriptorTable gdt;
 static segment_descriptor_struct gdt[5];
 static gdt_ptr_struct gdt_ptr;
 
