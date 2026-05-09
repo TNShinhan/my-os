@@ -2,6 +2,9 @@ DEFAULT_HOST!=../default-host.sh
 HOST?=DEFAULT_HOST
 HOSTARCH!=../target-triplet-to-arch.sh $(HOST)
 
+NASM:=nasm
+NASMFLAGS:=-f elf32
+
 CFLAGS?=-O2 -g
 CPPFLAGS?=
 LDFLAGS?=
@@ -48,7 +51,7 @@ $(ARCHDIR)/crtend.o \
 $(ARCHDIR)/crtn.o \
 
 .PHONY: all clean install install-headers install-kernel
-.SUFFIXES: .o .c .S
+.SUFFIXES: .o .c .S .asm
 
 all: myos.kernel
 
@@ -59,16 +62,36 @@ myos.kernel: $(OBJS) $(ARCHDIR)/linker.ld
 $(ARCHDIR)/crtbegin.o $(ARCHDIR)/crtend.o:
 	OBJ=`$(CC) $(CFLAGS) $(LDFLAGS) -print-file-name=$(@F)` && cp "$$OBJ" $@
 
-.c.o:
+# .c.o:
+# 	$(CC) -MD -c $< -o $@ -std=gnu11 $(CFLAGS) $(CPPFLAGS)
+
+# .S.o:
+# 	$(CC) -MD -c $< -o $@ $(CFLAGS) $(CPPFLAGS)
+
+# .asm.o:
+# 	$(NASM) $(NASMFLAGS) $< -o $@
+
+# Rule for compiling C files (.c to .c.o)
+%.c.o: %.c
 	$(CC) -MD -c $< -o $@ -std=gnu11 $(CFLAGS) $(CPPFLAGS)
 
-.S.o:
+# Rule for compiling GAS assembly files (.S to .S.o)
+%.S.o: %.S
 	$(CC) -MD -c $< -o $@ $(CFLAGS) $(CPPFLAGS)
+
+# Rule for compiling NASM assembly files (.asm to .asm.o)
+%.asm.o: %.asm
+	$(NASM) $(NASMFLAGS) $< -o $@
+
+# clean:
+# 	rm -f myos.kernel
+# 	rm -f $(OBJS) *.o */*.o */*/*.o
+# 	rm -f $(OBJS:.o=.d) *.d */*.d */*/*.d
 
 clean:
 	rm -f myos.kernel
-	rm -f $(OBJS) *.o */*.o */*/*.o
-	rm -f $(OBJS:.o=.d) *.d */*.d */*/*.d
+	rm -f $(OBJS) *.o *.c.o *.asm.o */*.o */*.c.o */*.asm.o
+	rm -f $(OBJS:.o=.d) *.d */*.d
 
 install: install-headers install-kernel
 

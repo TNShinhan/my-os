@@ -18,31 +18,62 @@ typedef struct {
     uint32_t base;
 } __attribute__((packed)) idt_descriptor;
 
-typedef enum {
-    // Gate Types
-    GATE_FLAG_16_BIT_TASK          = 0x5,
-    GATE_FLAG_16_BIT_INTERRUPT     = 0x6,
-    GATE_FLAG_16_BIT_TRAP          = 0x7,
-    GATE_FLAG_32_BIT_INTERRUPT     = 0xE,
-    GATE_FLAG_32_BIT_TRAP          = 0xF,
-
-    // 0-bit between Gate Type and DPL
-
-    // DPL (CPU Privilege Levels)
-    GATE_FLAG_RING0                = (0 << 5),
-    GATE_FLAG_RING1                = (1 << 5),
-    GATE_FLAG_RING2                = (2 << 5),
-    GATE_FLAG_RING3                = (3 << 5),
-
-    // Presnet Bit
-    GATE_FLAG_PRESENT              = (1 << 7),
-} GATE_FLAGS;
-
-// Define as static/global since the IDT on the stack may be overwritten
-idt_entry idt[256];
-idt_descriptor idt_ptr = {sizeof(idt) - 1, (uint32_t)idt};
-
 void init_idt();
-void set_idt_entry(uint8_t target, uint32_t base, uint16_t sel, uint8_t flags);
+void set_idt_entry(uint8_t target, uint32_t base, uint16_t segment_descriptor, uint8_t flags);
+
+extern void setIdt(idt_descriptor*);
+
+extern void isr0();
+extern void isr1();
+extern void isr2();
+extern void isr3();
+extern void isr4();
+extern void isr5();
+extern void isr6();
+extern void isr7();
+extern void isr8();
+extern void isr9();
+extern void isr10();
+extern void isr11();
+extern void isr12();
+extern void isr13();
+extern void isr14();
+extern void isr15();
+extern void isr16();
+extern void isr17();
+extern void isr18();
+extern void isr19();
+extern void isr20();
+extern void isr21();
+extern void isr22();
+extern void isr23();
+extern void isr24();
+extern void isr25();
+extern void isr26();
+extern void isr27();
+extern void isr28();
+extern void isr29();
+extern void isr30();
+extern void isr31();
+
+extern void isr128();
+extern void isr177();
+
+extern void irq0();
+extern void irq1();
+extern void irq2();
+extern void irq3();
+extern void irq4();
+extern void irq5();
+extern void irq6();
+extern void irq7();
+extern void irq8();
+extern void irq9();
+extern void irq10();
+extern void irq11();
+extern void irq12();
+extern void irq13();
+extern void irq14();
+extern void irq15();
 
 #endif
