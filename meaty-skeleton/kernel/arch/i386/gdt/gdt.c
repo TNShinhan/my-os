@@ -1,25 +1,25 @@
 #include <kernel/gdt.h>
 
+#define     GDT_CODE_SEGMENT               0x08
+
 // Define as static/global since the GDT on the stack may be overwritten
 gdt_entry gdt[5];
 gdt_descriptor gdt_ptr = {sizeof(gdt) - 1, (uint32_t)gdt};
 
-void init_gdt_segments() {
-    printf("Creating gdt...\n");
+void init_gdt() {
+    set_gdt_entry(0, 0, 0, 0);                    // Unused segment
+    set_gdt_entry(1, 0, 64 * 1024 * 1024, 0x9A);  // Kernel Code Segment
+    set_gdt_entry(2, 0, 64 * 1024 * 1024, 0x92);  // Kernel Data Segment
+    set_gdt_entry(3, 0, 64 * 1024 * 1024, 0xFA);  // User Code Segment
+    set_gdt_entry(4, 0, 64 * 1024 * 1024, 0xF2);  // User Data Segment
 
-    set_gdt_entry(&gdt[0], 0, 0, 0);                    // Unused segment
-    set_gdt_entry(&gdt[1], 0, 64 * 1024 * 1024, 0x9A);  // Kernel Code Segment
-    set_gdt_entry(&gdt[2], 0, 64 * 1024 * 1024, 0x92);  // Kernel Data Segment
-    set_gdt_entry(&gdt[3], 0, 64 * 1024 * 1024, 0xFA);  // User Code Segment
-    set_gdt_entry(&gdt[4], 0, 64 * 1024 * 1024, 0xF2);  // User Data Segment
-
-    printf("Loading gdt pointer into gdtr...\n");
     setGdt(&gdt_ptr);
-    printf("Reloading segments...\n");
     reloadSegments();
 }
 
-void set_gdt_entry(gdt_entry* target, uint32_t base, uint32_t limit, uint8_t access_rights) {
+void set_gdt_entry(uint32_t num, uint32_t base, uint32_t limit, uint8_t access_rights) {
+    gdt_entry* target = &gdt[num];
+
     if(limit <= 0xFFFFF) {
         // Fits perfectly in 20 bits. Use byte granularity (G=0)
         target->flags_limit_hi = 0x40;   // Limit is in 1-byte sized blocks

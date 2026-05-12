@@ -19,8 +19,8 @@ typedef struct {
     uint32_t base;
 } __attribute__((packed)) gdt_descriptor;
 
-void init_gdt_segments();
-void set_gdt_entry(gdt_entry* target, uint32_t base, uint32_t limit, uint8_t access_rights);
+void init_gdt();
+void set_gdt_entry(uint32_t num, uint32_t base, uint32_t limit, uint8_t access_rights);
 
 extern void setGdt(gdt_descriptor*);
 extern void reloadSegments();

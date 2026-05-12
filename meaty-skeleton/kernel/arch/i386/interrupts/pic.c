@@ -1,4 +1,4 @@
-#include <pic.h>
+#include <kernel/pic.h>
 
 #define PIC1_COMMAND_PORT 0x20
 #define PIC1_DATA_PORT    0X21
@@ -25,6 +25,4 @@ void init_pic() {
     // clear data registers
     outPortB(PIC1_DATA_PORT, 0x0);
     outPortB(PIC2_DATA_PORT, 0x0);
-
-    return;
 }
