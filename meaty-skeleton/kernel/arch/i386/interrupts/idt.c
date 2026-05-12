@@ -36,7 +36,7 @@ void init_idt() {
 
     init_pic();
 
-    // Reserved exceptions
+    // Reserved for exceptions
     set_idt_entry(0, (uint32_t)isr0, GDT_CODE_SEGMENT, INT_GATE_32_BIT_PL0);
     set_idt_entry(1, (uint32_t)isr1, GDT_CODE_SEGMENT, INT_GATE_32_BIT_PL0);
     set_idt_entry(2, (uint32_t)isr2, GDT_CODE_SEGMENT, INT_GATE_32_BIT_PL0);

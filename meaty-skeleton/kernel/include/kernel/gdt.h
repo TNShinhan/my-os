@@ -19,16 +19,9 @@ typedef struct {
     uint32_t base;
 } __attribute__((packed)) gdt_descriptor;
 
-// typedef enum {
-//     // Accessed bit
-
-
-// } ACCESS_BYTES_AND_FLAGS;
-
 void init_gdt_segments();
 void set_gdt_entry(gdt_entry* target, uint32_t base, uint32_t limit, uint8_t access_rights);
 
-// gdt.s
 extern void setGdt(gdt_descriptor*);
 extern void reloadSegments();
 
