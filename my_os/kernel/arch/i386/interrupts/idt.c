@@ -3,8 +3,6 @@
 #include <kernel/isr.h>
 #include <string.h>
 
-#define     GDT_CODE_SEGMENT               0x08
-
 // Gate types
 #define     GATE_FLAG_16_BIT_TASK          0x05
 #define     GATE_FLAG_16_BIT_INTERRUPT     0x06

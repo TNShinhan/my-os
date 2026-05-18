@@ -1,6 +1,21 @@
 #include <kernel/gdt.h>
 
-#define     GDT_CODE_SEGMENT               0x08
+// Types
+// -----
+typedef struct {
+    uint16_t limit_lo;
+    uint16_t base_lo;
+    uint8_t  base_hi;
+    uint8_t  access_rights;
+    uint8_t  flags_limit_hi;
+    uint8_t  base_xhi;
+} __attribute__((packed)) gdt_entry;
+
+typedef struct {
+    uint16_t limit;
+    uint32_t base;
+} __attribute__((packed)) gdt_descriptor;
+// -----
 
 // Define as static/global since the GDT on the stack may be overwritten
 gdt_entry gdt[5];
@@ -34,7 +49,7 @@ void set_gdt_entry(uint32_t num, uint32_t base, uint32_t limit, uint8_t access_r
     }
 
     // Base
-    target->base_lo         = base & 0xFFFF;
+    target->base_lo         = base & 0x0000FFFF;
     target->base_hi         = (base >> 16) & 0xFF;
     target->base_xhi        = (base >> 24) & 0xFF;
 

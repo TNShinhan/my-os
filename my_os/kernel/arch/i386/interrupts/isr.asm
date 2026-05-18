@@ -5,7 +5,7 @@
 global isr%1
 isr%1:
     push 0        ; push dummy error code
-    push %1     ; push interrupt number
+    push %1       ; push interrupt number
     jmp isr_common
 %endmacro
 
@@ -82,3 +82,4 @@ ISR_NOERRCODE 28
 ISR_NOERRCODE 29
 ISR_NOERRCODE 30
 ISR_NOERRCODE 31
+
